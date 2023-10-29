@@ -1,0 +1,8 @@
+target/
+*.class
+.settings
+.project
+.classpath
+.flattened-pom*
+.DS_Store
+/bin/
