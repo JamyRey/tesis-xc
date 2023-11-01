@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <f:facet name="first">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+    </f:facet>
+    <title>TESIS - Login</title>
+</h:head>
+
+<h:body styleClass="login-body">
+
+    <div class="login-panel"></div>
+
+    <div class="login-content">  
+
+        <h1><span>lbl.signIn</span></h1>
+
+		<h:form>
+		    <p:growl showDetail="false">
+                <p:autoUpdate />
+            </p:growl>
+		
+	        <div class="login-input-wrapper">
+	            <p:inputText id="username" placeholder="'lbl.email" value="loginController.login.username"/>
+	            <i class="pi pi-user" />
+	        </div>
+	
+	        <div class="login-input-wrapper">
+	            <p:password id="password" placeholder="lbl.password" feedback="false"  
+	                />
+	            <i class="pi pi-lock" />
+	        </div>
+	
+	        <p:commandButton  value="button.signIn" />
+	    </h:form>
+    </div>
+
+    <h:outputStylesheet name="css/layout-guestPreferences.componentTheme.css" library="babylon-layout" />
+    
+    <h:outputStylesheet name="css/b_layout.css" library="xetux" />
+
+</h:body>
+
+</html>

@@ -1,294 +1,803 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.tesis</groupId>
-  <artifactId>tesis-xc</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-
-  <packaging>pom</packaging>
-  <name>tesis-xc</name>
-  <url>http://maven.apache.org</url>
-
-	<modules>  
-   	 <module>tesis-xc-config</module>
-	</modules>    
-
-  <properties>
-	  	<revision>0.0.1-SNAPSHOT</revision>
-        <tesis-xs.version>0.0.1-SNAPSHOT</tesis-xs.version>
-	  
-    <!-- Version de Java a la que se compila -->
-        <jdk.version>17</jdk.version>
-        <tomcat.version>10.1</tomcat.version>
-        <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
-        
-        <!-- Propiedades para configuracion de Maven -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.version>3.10.1</maven.compiler.version>
-        <maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
-        <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
-        <flatten.maven.plugin.version>1.3.0</flatten.maven.plugin.version>
-        
-        <!-- Librerias externas -->
-        <junit.version>4.13.2</junit.version>
-        <log4j.version>2.19.0</log4j.version>
-        <slf4j.version>2.0.5</slf4j.version>
-        <jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
-        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
-        <weld-servlet-shaded.version>5.1.0.Final</weld-servlet-shaded.version>
-        <security.enterprise-api.version>3.0.0</security.enterprise-api.version>
-        <security.enterprise.version>3.0.1</security.enterprise.version>
-        <jsp-api.version>3.1.0</jsp-api.version>
-        <jstl-api.version>3.0.0</jstl-api.version>
-        <jstl.version>3.0.1</jstl.version>
-        <el-api.version>5.0.1</el-api.version>
-        <el.version>4.0.2</el.version>
-        <primefaces.version>11.0.0</primefaces.version>
-        <primefaces-extensions.version>11.0.6</primefaces-extensions.version>
-        <primefaces-themes.version>6.0.0</primefaces-themes.version>
-        <omnifaces.version>4.0.1</omnifaces.version>
-        <faces-api.version>4.0.1</faces-api.version>
-        <faces.version>4.0.0</faces.version>
-        <cdi-api.version>4.0.1</cdi-api.version>
-        <cdi.version>5.1.0.Final</cdi.version>
-        <jsf.version>2.2.20</jsf.version>
-        <validation-api.version>3.0.2</validation-api.version>
-        <jersey.version>3.1.0</jersey.version>
-        <jackson-datatype-jsr310.version>2.14.1</jackson-datatype-jsr310.version>
-        <poi.version>5.2.3</poi.version>
-        <html-sanitizer.version>20220608.1</html-sanitizer.version>
-  </properties>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+      
   
-   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>${flatten.maven.plugin.version}</version>
-                <configuration />
-                <executions>
-                    <!-- enable flattening -->
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <!-- ensure proper cleanup -->
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven.compiler.version}</version>
-                    <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>${maven.war.plugin.version}</version>
-                    <configuration>
-                        <failOnMissingWebXml>false</failOnMissingWebXml>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.m2e</groupId>
-                    <artifactId>lifecycle-mapping</artifactId>
-                    <version>${lifecycle.mapping.version}</version>
-                    <configuration>
-                        <lifecycleMappingMetadata>
-                            <pluginExecutions>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>
+  <modelVersion>4.0.0</modelVersion>
+    
+  <groupId>com.tesis</groupId>
+      
+  
+  <artifactId>tesis-xc</artifactId>
+     
+  
+  <version>0.0.1-SNAPSHOT</version>
+     
+  
+  <packaging>pom</packaging>
+     
+  
+  <name>tesis-xc</name>
+    
+  
+  <url>http://maven.apache.org</url>
+    	
+  
+  <modules>      
+    <module>tesis-xc-config</module>
+    <module>tesis-xc-manager</module>  
+    <module>tesis-xc-web</module>
+      
+  </modules>
+        
+
+  
+  
+  <properties>
+        	  	
+    
+    <revision>0.0.1-SNAPSHOT</revision>
+          
+    
+    <tesis-xs.version>0.0.1-SNAPSHOT</tesis-xs.version>
+        
+    <!-- Version de Java a la que se compila -->
+        
+    
+    <jdk.version>17</jdk.version>
+         
+    
+    <tomcat.version>10.1</tomcat.version>
+        
+    
+    <lifecycle.mapping.version>1.0.0</lifecycle.mapping.version>
+      
+    
+    <!-- Propiedades para configuracion de Maven -->
+          
+    
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     
+    
+    <maven.compiler.version>3.10.1</maven.compiler.version>
+                
+    
+    <maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
+                
+    
+    <maven.war.plugin.version>3.3.2</maven.war.plugin.version>
+                
+    
+    <flatten.maven.plugin.version>1.3.0</flatten.maven.plugin.version>
+                        
+    
+    <!-- Librerias externas -->
+                
+    
+    <junit.version>4.13.2</junit.version>
+                
+    
+    <log4j.version>2.19.0</log4j.version>
+                
+    
+    <slf4j.version>2.0.5</slf4j.version>
+                
+    
+    <jakartaee-web-api.version>10.0.0</jakartaee-web-api.version>
+                
+    
+    <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+                
+    
+    <weld-servlet-shaded.version>5.1.0.Final</weld-servlet-shaded.version>
+                
+    
+    <security.enterprise-api.version>3.0.0</security.enterprise-api.version>
+                
+    
+    <security.enterprise.version>3.0.1</security.enterprise.version>
+                
+    
+    <jsp-api.version>3.1.0</jsp-api.version>
+                
+    
+    <jstl-api.version>3.0.0</jstl-api.version>
+                
+    
+    <jstl.version>3.0.1</jstl.version>
+                
+    
+    <el-api.version>5.0.1</el-api.version>
+                
+    
+    <el.version>4.0.2</el.version>
+                
+    
+    <primefaces.version>11.0.0</primefaces.version>
+                
+    
+    <primefaces-extensions.version>11.0.6</primefaces-extensions.version>
+                
+    
+    <primefaces-themes.version>6.0.0</primefaces-themes.version>
+                
+    
+    <omnifaces.version>4.0.1</omnifaces.version>
+                
+    
+    <faces-api.version>4.0.1</faces-api.version>
+                
+    
+    <faces.version>4.0.0</faces.version>
+                
+    
+    <cdi-api.version>4.0.1</cdi-api.version>
+                
+    
+    <cdi.version>5.1.0.Final</cdi.version>
+                
+    
+    <jsf.version>2.2.20</jsf.version>
+                
+    
+    <validation-api.version>3.0.2</validation-api.version>
+                
+    
+    <jersey.version>3.1.0</jersey.version>
+                
+    
+    <jackson-datatype-jsr310.version>2.14.1</jackson-datatype-jsr310.version>
+                
+    
+    <poi.version>5.2.3</poi.version>
+                
+    
+    <html-sanitizer.version>20220608.1</html-sanitizer.version>
+          
+  
+  </properties>
+      
+   
+  
+  <build>
+                
+    
+    <plugins>
+                        
+      
+      <plugin>
+                                
+        
+        <groupId>org.codehaus.mojo</groupId>
+                                
+        
+        <artifactId>flatten-maven-plugin</artifactId>
+                                
+        
+        <version>${flatten.maven.plugin.version}</version>
+                                
+        
+        <configuration/>
+                                
+        
+        <executions>
+                                        
+          
+          <!-- enable flattening -->
+                                        
+          
+          <execution>
+                                                
+            
+            <id>flatten</id>
+                                                
+            
+            <phase>process-resources</phase>
+                                                
+            
+            <goals>
+                                                        
+              
+              <goal>flatten</goal>
+                                                    
+            
+            </goals>
+                                            
+          
+          </execution>
+                                        
+          
+          <!-- ensure proper cleanup -->
+                                        
+          
+          <execution>
+                                                
+            
+            <id>flatten.clean</id>
+                                                
+            
+            <phase>clean</phase>
+                                                
+            
+            <goals>
+                                                        
+              
+              <goal>clean</goal>
+                                                    
+            
+            </goals>
+                                            
+          
+          </execution>
+                                    
+        
+        </executions>
+                            
+      
+      </plugin>
+                    
+    
+    </plugins>
+                
+    
+    <pluginManagement>
+                        
+      
+      <plugins>
+                                
+        
+        <plugin>
+                                        
+          
+          <artifactId>maven-compiler-plugin</artifactId>
+                                        
+          
+          <version>${maven.compiler.version}</version>
+                                        
+          
+          <configuration>
+                                                
+            
+            <source>${jdk.version}</source>
+                                                
+            
+            <target>${jdk.version}</target>
+                                            
+          
+          </configuration>
+                                    
+        
+        </plugin>
+                                
+        
+        <plugin>
+                                        
+          
+          <groupId>org.apache.maven.plugins</groupId>
+                                        
+          
+          <artifactId>maven-war-plugin</artifactId>
+                                        
+          
+          <version>${maven.war.plugin.version}</version>
+                                        
+          
+          <configuration>
+                                                
+            
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+                                            
+          
+          </configuration>
+                                    
+        
+        </plugin>
+                                
+        
+        <plugin>
+                                        
+          
+          <groupId>org.eclipse.m2e</groupId>
+                                        
+          
+          <artifactId>lifecycle-mapping</artifactId>
+                                        
+          
+          <version>${lifecycle.mapping.version}</version>
+                                        
+          
+          <configuration>
+                                                
+            
+            <lifecycleMappingMetadata>
+                                                        
+              
+              <pluginExecutions>
+                                                                
+                
+                <pluginExecution>
+                                                                        
+                  
+                  <pluginExecutionFilter>
+                                                                                
+                    
+                    <groupId>
                                             org.codehaus.mojo
                                         </groupId>
-                                        <artifactId>
+                                                                                
+                    
+                    <artifactId>
                                             flatten-maven-plugin
                                         </artifactId>
-                                        <versionRange>
+                                                                                
+                    
+                    <versionRange>
                                             [1.0.1,)
                                         </versionRange>
-                                        <goals>
-                                            <goal>flatten</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.javalite</groupId>
-                                        <artifactId>
+                                                                                
+                    
+                    <goals>
+                                                                                        
+                      
+                      <goal>flatten</goal>
+                                                                                    
+                    
+                    </goals>
+                                                                            
+                  
+                  </pluginExecutionFilter>
+                                                                        
+                  
+                  <action>
+                                                                                
+                    
+                    <ignore/>
+                                                                            
+                  
+                  </action>
+                                                                    
+                
+                </pluginExecution>
+                                                                
+                
+                <pluginExecution>
+                                                                        
+                  
+                  <pluginExecutionFilter>
+                                                                                
+                    
+                    <groupId>org.javalite</groupId>
+                                                                                
+                    
+                    <artifactId>
                                             activejdbc-instrumentation
                                         </artifactId>
-                                        <versionRange>
+                                                                                
+                    
+                    <versionRange>
                                             [2.2,)
                                         </versionRange>
-                                        <goals>
-                                            <goal>instrument</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
-                            </pluginExecutions>
-                        </lifecycleMappingMetadata>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-
-   <dependencyManagement>
-        <dependencies>	
-   			
-   			 <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>tesis-xs-entity</artifactId>
-                <version>${tesis-xs.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>tesis-xs-serv</artifactId>
-                <version>${tesis-xs.version}</version>
-            </dependency>
-            <dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>tesis-xs-exception</artifactId>
-			<version>${tesis-xs.version}</version>
-		</dependency>
-		
-		<!-- Librerias Externas -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
+                                                                                
+                    
+                    <goals>
+                                                                                        
+                      
+                      <goal>instrument</goal>
+                                                                                    
+                    
+                    </goals>
+                                                                            
+                  
+                  </pluginExecutionFilter>
+                                                                        
+                  
+                  <action>
+                                                                                
+                    
+                    <ignore/>
+                                                                            
+                  
+                  </action>
+                                                                    
+                
+                </pluginExecution>
+                                                            
+              
+              </pluginExecutions>
+                                                    
             
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.platform</groupId>
-                <artifactId>jakarta.jakartaee-web-api</artifactId>
-                <version>${jakartaee-web-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>${jakarta.servlet-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.weld.servlet</groupId>
-                <artifactId>weld-servlet-shaded</artifactId>
-                <version>${weld-servlet-shaded.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.servlet.jsp</groupId>
-                <artifactId>jakarta.servlet.jsp-api</artifactId>
-                <version>${jsp-api.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.servlet.jsp.jstl</groupId>
-                <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-                <version>${jstl-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.web</groupId>
-                <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-                <version>${jstl.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.security.enterprise</groupId>
-                <artifactId>jakarta.security.enterprise-api</artifactId>
-                <version>${security.enterprise-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish.soteria</groupId>
-                <artifactId>jakarta.security.enterprise</artifactId>
-                <version>${security.enterprise.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>jakarta.faces</groupId>
-                <artifactId>jakarta.faces-api</artifactId>
-                <version>${faces-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>jakarta.faces</artifactId>
-                <version>${faces.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>jakarta.el</groupId>
-                <artifactId>jakarta.el-api</artifactId>
-                <version>${el-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>jakarta.el</artifactId>
-                <version>${el.version}</version>
-                <scope>test</scope>
-            </dependency>
-            
+            </lifecycleMappingMetadata>
+                                            
           
+          </configuration>
+                                    
+        
+        </plugin>
+                            
+      
+      </plugins>
+                    
+    
+    </pluginManagement>
             
-            <dependency>
-                <groupId>jakarta.enterprise</groupId>
-                <artifactId>jakarta.enterprise.cdi-api</artifactId>
-                <version>${cdi-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.weld.se</groupId>
-                <artifactId>weld-se-core</artifactId>
-                <version>${cdi.version}</version>
-            </dependency>
+  
+  </build>
+       
+  
+  <dependencyManagement>
+                
+    
+    <dependencies>
+            	 			
+		
+		
+      <dependency>
+                        
+        <groupId>${project.groupId}</groupId>
+                        
+        <artifactId>tesis-xc-config</artifactId>
+                        
+        <version>${revision}</version>
+                    
+      </dependency>
+                  
+      <dependency>
+                        
+        <groupId>${project.groupId}</groupId>
+                        
+        <artifactId>tesis-xc-manager</artifactId>
+                        
+        <version>${revision}</version>
+                    
+      </dependency>
+         			 
+      
+      <dependency>
+                                
+        
+        <groupId>${project.groupId}</groupId>
+                                
+        
+        <artifactId>tesis-xs-entity</artifactId>
+                                
+        
+        <version>${tesis-xs.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>${project.groupId}</groupId>
+                                
+        
+        <artifactId>tesis-xs-serv</artifactId>
+                                
+        
+        <version>${tesis-xs.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                			
+        
+        <groupId>${project.groupId}</groupId>
+                			
+        
+        <artifactId>tesis-xs-exception</artifactId>
+                			
+        
+        <version>${tesis-xs.version}</version>
+                		
+      
+      </dependency>
+            		
+		
+      
+      <!-- Librerias Externas -->
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>junit</groupId>
+                                
+        
+        <artifactId>junit</artifactId>
+                                
+        
+        <version>${junit.version}</version>
+                                
+        
+        <scope>test</scope>
+                            
+      
+      </dependency>
+                        
             
-            <!--<dependency>
+      
+      <dependency>
+                                
+        
+        <groupId>org.slf4j</groupId>
+                                
+        
+        <artifactId>slf4j-api</artifactId>
+                                
+        
+        <version>${slf4j.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.apache.logging.log4j</groupId>
+                                
+        
+        <artifactId>log4j-api</artifactId>
+                                
+        
+        <version>${log4j.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.apache.logging.log4j</groupId>
+                                
+        
+        <artifactId>log4j-core</artifactId>
+                                
+        
+        <version>${log4j.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.apache.logging.log4j</groupId>
+                                
+        
+        <artifactId>log4j-slf4j-impl</artifactId>
+                                
+        
+        <version>${log4j.version}</version>
+                            
+      
+      </dependency>
+                 
+       
+      <dependency>
+                                
+        
+        <groupId>jakarta.platform</groupId>
+                                
+        
+        <artifactId>jakarta.jakartaee-web-api</artifactId>
+                                
+        
+        <version>${jakartaee-web-api.version}</version>
+                                
+        
+        <scope>provided</scope>
+                            
+      
+      </dependency>
+                      
+      
+      <dependency>
+                                
+        
+        <groupId>jakarta.servlet</groupId>
+                                
+        
+        <artifactId>jakarta.servlet-api</artifactId>
+                                
+        
+        <version>${jakarta.servlet-api.version}</version>
+                                
+        
+        <scope>provided</scope>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.jboss.weld.servlet</groupId>
+                                
+        
+        <artifactId>weld-servlet-shaded</artifactId>
+                                
+        
+        <version>${weld-servlet-shaded.version}</version>
+                            
+      
+      </dependency>
+                    
+      
+      <dependency>
+                                
+        
+        <groupId>jakarta.servlet.jsp</groupId>
+                                 
+        
+        <artifactId>jakarta.servlet.jsp-api</artifactId>
+                                
+        
+        <version>${jsp-api.version}</version>
+                                
+        
+        <scope>provided</scope>
+                            
+      
+      </dependency>
+                       
+            
+      
+      <dependency>
+                                
+        
+        <groupId>jakarta.servlet.jsp.jstl</groupId>
+                                
+        
+        <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+                                
+        
+        <version>${jstl-api.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.glassfish.web</groupId>
+                                
+        
+        <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+                                
+        
+        <version>${jstl.version}</version>
+                            
+      
+      </dependency>
+                                    
+      
+      <dependency>
+                                
+        
+        <groupId>jakarta.security.enterprise</groupId>
+                
+        <artifactId>jakarta.security.enterprise-api</artifactId>
+                                
+        
+        <version>${security.enterprise-api.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.glassfish.soteria</groupId>
+                                
+        
+        <artifactId>jakarta.security.enterprise</artifactId>
+                                
+        
+        <version>${security.enterprise.version}</version>
+                            
+      
+      </dependency>
+                       
+      
+      <dependency>
+                                
+        
+        <groupId>jakarta.faces</groupId>
+                                
+        
+        <artifactId>jakarta.faces-api</artifactId>
+                                
+        
+        <version>${faces-api.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.glassfish</groupId>
+                                
+        
+        <artifactId>jakarta.faces</artifactId>
+                                
+        
+        <version>${faces.version}</version>
+                            
+      
+      </dependency>
+            
+      <dependency>
+                                
+        
+        <groupId>jakarta.el</groupId>
+                                
+        
+        <artifactId>jakarta.el-api</artifactId>
+                                
+        
+        <version>${el-api.version}</version>
+                            
+      
+      </dependency>
+            
+      <dependency>
+                                
+        
+        <groupId>org.glassfish</groupId>
+                                
+        
+        <artifactId>jakarta.el</artifactId>
+                                
+        
+        <version>${el.version}</version>
+                                
+        
+        <scope>test</scope>
+                            
+      
+      </dependency>
+            
+      <dependency>
+                                
+        
+        <groupId>jakarta.enterprise</groupId>
+                                
+        
+        <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                                
+        
+        <version>${cdi-api.version}</version>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                
+        <groupId>org.jboss.weld.se</groupId>
+                
+        <artifactId>weld-se-core</artifactId>
+                              
+        
+        <version>${cdi.version}</version>
+                            
+      
+      </dependency>
+                        
+            
+      
+      <!--<dependency>
                 <groupId>com.sun.faces</groupId>
                 <artifactId>jsf-api</artifactId>
                 <version>${jsf.version}</version>
@@ -298,66 +807,168 @@
                 <artifactId>jsf-impl</artifactId>
                 <version>${jsf.version}</version>
             </dependency>-->
+                        
             
-            <dependency>
-	            <groupId>jakarta.validation</groupId>
-	            <artifactId>jakarta.validation-api</artifactId>
-	            <version>${validation-api.version}</version>
-	        </dependency>
+      
+      <dependency>
+                	            
+        
+        <groupId>jakarta.validation</groupId>
+                	            
+        
+        <artifactId>jakarta.validation-api</artifactId>
+                	            
+        
+        <version>${validation-api.version}</version>
+                	        
+      
+      </dependency>
+                                    
+      
+      <dependency>
+                                
+        
+        <groupId>org.primefaces</groupId>
+                                
+        
+        <artifactId>primefaces</artifactId>
+                                
+        
+        <version>${primefaces.version}</version>
+                                
+        
+        <classifier>jakarta</classifier>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.primefaces.extensions</groupId>
+                                
+        
+        <artifactId>primefaces-extensions</artifactId>
+                                
+        
+        <version>${primefaces-extensions.version}</version>
+                                
+        
+        <classifier>jakarta</classifier>
+                            
+      
+      </dependency>
+                        
+      
+      <dependency>
+                                
+        
+        <groupId>org.omnifaces</groupId>
+                                
+        
+        <artifactId>omnifaces</artifactId>
+                                
+        
+        <version>${omnifaces.version}</version>
+                            
+      
+      </dependency>
+                       
+      
+      <dependency>
+                    			
+        
+        <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+                    			
+        
+        <artifactId>owasp-java-html-sanitizer</artifactId>
+                    			
+        
+        <version>${html-sanitizer.version}</version>
+                			
+      
+      </dependency>
+                       
+      
+      <dependency>
+                				
+        
+        <groupId>org.glassfish.jersey.containers</groupId>
+                				
+        
+        <artifactId>jersey-container-servlet</artifactId>
+                				
+        
+        <version>${jersey.version}</version>
+                			
+      
+      </dependency>
             
-            <dependency>
-                <groupId>org.primefaces</groupId>
-                <artifactId>primefaces</artifactId>
-                <version>${primefaces.version}</version>
-                <classifier>jakarta</classifier>
-            </dependency>
-            <dependency>
-                <groupId>org.primefaces.extensions</groupId>
-                <artifactId>primefaces-extensions</artifactId>
-                <version>${primefaces-extensions.version}</version>
-                <classifier>jakarta</classifier>
-            </dependency>
-            <dependency>
-                <groupId>org.omnifaces</groupId>
-                <artifactId>omnifaces</artifactId>
-                <version>${omnifaces.version}</version>
-            </dependency>
+      <dependency>
+                				
+        
+        <groupId>org.glassfish.jersey.media</groupId>
+                				
+        
+        <artifactId>jersey-media-json-jackson</artifactId>
+                
+        <version>${jersey.version}</version>
+                			
+      
+      </dependency>
+            			
+      
+      <dependency>
+                				
+        
+        <groupId>org.glassfish.jersey.inject</groupId>
+                				
+        
+        <artifactId>jersey-hk2</artifactId>
+                				
+        
+        <version>${jersey.version}</version>
+                			
+      
+      </dependency>
+           			
+      
+      <dependency>
+                			    
+        
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+                			    
+        
+        <artifactId>jackson-datatype-jsr310</artifactId>
+                			    
+        
+        <version>${jackson-datatype-jsr310.version}</version>
+                			
+      
+      </dependency>
+            						
+      
+      <dependency>
+                                
+        
+        <groupId>org.apache.poi</groupId>
+                                
+        
+        <artifactId>poi</artifactId>
+                                
+        
+        <version>${poi.version}</version>
+                            
+      
+      </dependency>
+               			
+  		
+    
+    </dependencies>
             
-            <dependency>
-    			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
-    			<artifactId>owasp-java-html-sanitizer</artifactId>
-    			<version>${html-sanitizer.version}</version>
-			</dependency>
-            
-             <dependency>
-				<groupId>org.glassfish.jersey.containers</groupId>
-				<artifactId>jersey-container-servlet</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.media</groupId>
-				<artifactId>jersey-media-json-jackson</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.glassfish.jersey.inject</groupId>
-				<artifactId>jersey-hk2</artifactId>
-				<version>${jersey.version}</version>
-			</dependency>
-			
-			<dependency>
-			    <groupId>com.fasterxml.jackson.datatype</groupId>
-			    <artifactId>jackson-datatype-jsr310</artifactId>
-			    <version>${jackson-datatype-jsr310.version}</version>
-			</dependency>
-			
-			<dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>${poi.version}</version>
-            </dependency>
-   			
-  		</dependencies>
-    </dependencyManagement>
+  
+  </dependencyManagement>
+    
 
 </project>
