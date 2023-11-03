@@ -5,6 +5,9 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" 
          id="WebApp_ID" version="6.0">
 	<display-name>tesis</display-name>
+	<welcome-file-list>
+		<welcome-file>logged/dashboard.xhtml</welcome-file>
+	</welcome-file-list>
 	<context-param>
 		<param-name>jakarta.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>client</param-value>
@@ -23,7 +26,7 @@
      </context-param>
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
-		<param-value>arya</param-value>
+		<param-value>saga</param-value>
 	</context-param>
 	<context-param>
 		<param-name>primefaces.FONT_AWESOME</param-name>

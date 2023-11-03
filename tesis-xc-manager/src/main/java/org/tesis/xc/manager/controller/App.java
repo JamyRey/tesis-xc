@@ -1,4 +1,4 @@
-package org.tesis.xc.manager;
+package org.tesis.xc.manager.controller;
 
 /**
  * Hello world!

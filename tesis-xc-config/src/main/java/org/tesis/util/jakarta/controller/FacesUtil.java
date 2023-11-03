@@ -1,6 +1,4 @@
-/**
- *
- */
+
 package org.tesis.util.jakarta.controller;
 
 import java.io.IOException;
