@@ -1,0 +1,261 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Clases</ui:define>
+
+	<ui:define name="viewname">
+		<li><p:link outcome="index.xhtml">Clases</p:link></li>
+	</ui:define>
+
+
+	<ui:define name="content">
+
+		<div class="grid" style="height: 100%;">
+			<div class="col col-12">
+
+				<div class="card" style="height: 100%;">
+					<h:form id="form">
+
+						<p:toolbar>
+							<p:toolbarGroup>
+								<p:commandButton value="Nuevo estudiante" icon="pi pi-plus"
+									actionListener="#{studentController.initNewStudent}"
+									update=":crudForm:crud-dialog-content  crudForm:crudButtons"
+									oncomplete="PF('crudDialog').show()"
+									styleClass="ui-button-success" style="margin-right: .5rem">
+									<p:resetInput target=":crudForm:crud-dialog-content" />
+								</p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+
+						<p:dataTable id="tableList" widgetVar="tableList"
+							value="#{studentController.students}" globalFilterOnly="true"
+							var="item" rowKey="#{item.id}" rowIndexVar="rowNumber"
+							reflow="true" resizableColumns="true" draggableColumns="true"
+							scrollable="#{scrollableDefault}"
+							scrollHeight="#{scrollHeightDefault}" paginator="true"
+							paginatorPosition="#{paginatorPosition}"
+							rows="#{rowPerPageDefault}"
+							currentPageReportTemplate="#{currentPageReportTemplate}"
+							rowsPerPageTemplate="#{rowsPerPageTemplate}"
+							paginatorTemplate="#{paginatorTemplate}"
+							emptyMessage="#{studentController.noMatch}">
+							<p:column headerText="#" width="10" toggleable="false"
+								styleClass="table-row-number">
+								<h:outputText class="title-row" value="#{rowNumber+1}" />
+							</p:column>
+
+							<p:column width="40" exportable="false" toggleable="false"
+								resizable="false">
+								<p:commandButton icon="pi pi-pencil"
+									action="#{studentController.getStudentById(item.id)}"
+									oncomplete="PF('crudDialog').show()"
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
+								<p:commandButton icon="pi pi-search"
+									action="#{studentController.getStudentById(item.id)}"
+									update=":studentsForm:studentsDialog"
+									oncomplete="PF('studentsDialog').show()"
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="Nombre Completo" width="300"
+								toggleable="false"
+								sortBy="#{item.firstName.concat(' ').concat(item.lastName)}"
+								filterBy="#{item.firstName.concat(' ').concat(item.lastName)}"
+								filterMatchMode="contains">
+								<h:outputText
+									value="#{item.firstName.concat(' ').concat(item.lastName)}"
+									title="#{item.firstName.concat(' ').concat(item.lastName)}" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+		<h:form id="crudForm">
+
+			<p:sidebar id="crudDialog" widgetVar="crudDialog" fullScreen="true"
+				modal="true" responsive="true" dynamic="true" style="overflow:auto;"
+				blockScroll="true">
+
+
+				<h3>Estudiante</h3>
+
+				<p:outputPanel id="crud-dialog-content" class="ui-fluid">
+
+					<p:tabView id="tabs">
+						<p:tab id="studentDataFieldSet" title="Datos del Estudiente">
+							<div class="formgrid grid">
+								<div class="field col col-12 md:col-4 lg:col-4">
+									<p:outputLabel id="nameLabel" value="Nombre" for="name"
+										title="Nombre del Estudiante (Requerido)"
+										style="cursor: help;">
+										<i class="pi pi-question-circle" aria-hidden="true"
+											style="cursor: help;"></i>
+									</p:outputLabel>
+									<p:inputText id="name"
+										value="#{studentController.item.firstName}" required="true"
+										maxlength="100" title="Nombre de la Estudiante (Requerido)" />
+								</div>
+								<div class="field col col-12 md:col-4 lg:col-4">
+									<p:outputLabel id="lastNameLabel" value="Apellido"
+										for="lastName" title="Apellido del Estudiante (Requerido)"
+										style="cursor: help;">
+										<i class="pi pi-question-circle" aria-hidden="true"
+											style="cursor: help;"></i>
+									</p:outputLabel>
+									<p:inputText id="lastName"
+										value="#{studentController.item.lastName}" required="true"
+										maxlength="100" title="Apellido del Estudiante (Requerido)" />
+								</div>
+								<div class="field col col-12 md:col-4 lg:col-4">
+									<p:outputLabel id="studentIdLabel"
+										value="Identifición del Estudiante" for="studentId"
+										title="Identifición del Estudiante (Requerido)"
+										style="cursor: help;">
+										<i class="pi pi-question-circle" aria-hidden="true"
+											style="cursor: help;"></i>
+									</p:outputLabel>
+									<p:inputNumber id="studentId"
+										value="#{studentController.item.studentId}" required="true"
+										minValue="0" decimalPlaces="0"
+										title="Identifición del Estudiante (Requerido)" />
+								</div>
+
+							</div>
+						</p:tab>
+					</p:tabView>
+				</p:outputPanel>
+				<div class="formgrid grid">
+					<div class="ui-sidebar-footer field col col-12 md:col-12 lg:col-12">
+
+						<h:panelGroup id="crudButtons" class="right-0">
+
+							<p:commandButton id="saveBtn" value="Guardar" icon="pi pi-save"
+								update="crud-dialog-content :form:tableList crudButtons"
+								process="crud-dialog-content @this"
+								action="#{studentController.save}"
+								styleClass="ui-button-success">
+							</p:commandButton>
+
+							<p:commandButton value="Borrar" icon="pi pi-trash"
+								rendered="#{studentController.item.status eq 1}"
+								styleClass="ui-button-danger"
+								update="crud-dialog-content :form:tableList crudButtons"
+								process="@this" action="#{studentController.delete}">
+								<p:confirm header="Confirmación"
+									message="¿Desea eliminar el registro?" icon="ui-icon-alert" />
+							</p:commandButton>
+
+							<p:commandButton value="Cancelar" icon="pi pi-times"
+								onclick="PF('crudDialog').hide()" styleClass="ui-button-warning"
+								type="button">
+								<p:confirm header="Confirmación" escape="false"
+									message="¿Seguro desea continuar?" icon="ui-icon-alert" />
+							</p:commandButton>
+
+						</h:panelGroup>
+					</div>
+				</div>
+			</p:sidebar>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="350">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="studentsForm">
+			<p:dialog
+				header="Clases del Estudiante: #{studentController.item.firstName.concat(' ').concat(studentController.item.lastName)}"
+				showEffect="fade" modal="true" id="studentsDialog"
+				widgetVar="studentsDialog" responsive="true"
+				style="max-height:100%;overflow: auto;">
+				<p:outputPanel id="classes-dialog-content" class="ui-fluid">
+
+					<div class="col col-12">
+
+						<p:dataTable id="classesTable" widgetVar="classesTable"
+							size="small" value="#{studentController.item.classes}"
+							globalFilterOnly="true" var="item" rowKey="#{item.id}"
+							rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
+							draggableColumns="true" scrollable="#{scrollableDefault}"
+							scrollHeight="300" paginator="true"
+							paginatorPosition="#{paginatorPosition}" rows="10"
+							currentPageReportTemplate="#{currentPageReportTemplate}"
+							paginatorTemplate="#{paginatorTemplate}"
+							emptyMessage="#{studentController.noMatch}">
+
+							<p:column headerText="Nombre de la Clase" width="300"
+								toggleable="false" sortBy="#{item.name}" filterBy="#{item.name}"
+								filterMatchMode="contains">
+								<h:outputText id="name" value="#{item.name}"
+									title="#{item.name}" />
+							</p:column>
+							<p:column width="300" toggleable="false" >
+								<p:commandButton icon="pi pi-list"
+									action="#{studentController.getScoresById(item.id)}"
+									update=":studentsForm:scoresDialog"
+									oncomplete="PF('scoresDialog').show()"
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+					</div>
+
+				</p:outputPanel>
+			</p:dialog>
+			
+			<p:dialog header="Puntaje"
+				id="scoresDialog" showEffect="fade" modal="true"
+				widgetVar="scoresDialog" responsive="true"
+				style="min-width: 28%;max-width: 380px;width: auto;max-height:100%;">
+				<p:outputPanel id="scores-dialog-content" class="ui-fluid">
+
+					<div class="col col-12">
+						<div class="formgrid grid">
+						
+						<p:dataTable id="scoresTable" widgetVar="scoresTable"
+							size="small" value="#{studentController.gameSessionsDisplay}"
+							globalFilterOnly="true" var="item" rowKey="#{item.id}"
+							rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
+							draggableColumns="true" scrollable="#{scrollableDefault}"
+							scrollHeight="300" paginator="true"
+							paginatorPosition="#{paginatorPosition}" rows="10"
+							currentPageReportTemplate="#{currentPageReportTemplate}"
+							paginatorTemplate="#{paginatorTemplate}"
+							emptyMessage="#{studentController.noMatch}">
+							
+							<p:column headerText="Nombre de la Clase" width="300"
+								toggleable="false" sortBy="#{item.classE.name}" filterBy="#{item.classE.name}"
+								filterMatchMode="contains">
+								<h:outputText  value="#{item.classE.name}"
+									title="#{item.classE.name}" />
+							</p:column>
+							<p:column headerText="Empieza" width="120"
+									sortBy="#{item.startAt}" styleClass="table-content-center">
+							<h:outputText id="starAt" value="#{item.startAt}" >
+										<f:convertDateTime type="localDateTime" />
+									</h:outputText>
+							</p:column>
+						</p:dataTable>
+						</div>
+					</div>
+				</p:outputPanel>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

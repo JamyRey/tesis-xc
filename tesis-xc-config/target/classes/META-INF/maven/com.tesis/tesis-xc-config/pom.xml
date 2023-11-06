@@ -25,6 +25,11 @@
 		<groupId>${project.groupId}</groupId>
 		<artifactId>tesis-xs-exception</artifactId>
 	</dependency>  
+	 <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>tesis-xs-serv</artifactId>
+        <version>${tesis-xs.version}</version>
+     </dependency>
 	  
     <dependency>
       <groupId>junit</groupId>

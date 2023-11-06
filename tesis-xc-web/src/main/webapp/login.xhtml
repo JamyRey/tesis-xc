@@ -24,7 +24,7 @@
 					align-content: space-around;align-items: flex-start;">
 
 					<h1>
-						<span>lbl.signIn</span>
+						<span>Iniciar sesión</span>
 					</h1>
 
 					<h:form>
@@ -33,22 +33,23 @@
 						</p:growl>
 
 						<div class="login-input-wrapper">
-							<p:inputText id="username" placeholder="user" value="username" />
+							<p:inputText id="username" placeholder="Usuario" value="#{loginController.login.username}" />
 							<i class="pi pi-user" />
 						</div>
 
 						<div class="login-input-wrapper">
-							<p:password id="password" placeholder="password" feedback="false" />
-							<i class="pi pi-lock" />
+							<p:password id="password" placeholder="Contraseña" feedback="false"  value="#{loginController.login.password}" />
+							<i class="pi pi-lock"/>
 						</div>
 
-						<p:commandButton value="button.signIn" />
+						<p:commandButton action="#{loginController.signIn}" value="Iniciar sesión" />
 					</h:form>
 				</div>
 
-	<h:outputStylesheet name="css/layout-amber.scss" library="tesis" />
+	<h:outputStylesheet name="css/layout-amber.css" library="tesis" />
  	<h:outputStylesheet name="css/primeflex.min.css" library="tesis" />
 	<h:outputStylesheet name="css/b_layout.css" library="tesis" />
+	<h:outputStylesheet name="css/theme.css" library="tesis" />
 
 </h:body>
 

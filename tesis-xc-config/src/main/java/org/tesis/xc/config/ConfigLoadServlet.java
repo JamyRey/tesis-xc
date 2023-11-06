@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tesis.xs.utils.ProviderUtils;
 
 
 @SuppressWarnings("serial")
@@ -20,7 +21,7 @@ public class ConfigLoadServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         REAL_PATH = config.getServletContext().getRealPath("/");
-        //ProviderUtils.loaderProvider();
+        ProviderUtils.loaderProvider();
         log.info("REAL PATH load: {}", REAL_PATH);
     }
 }

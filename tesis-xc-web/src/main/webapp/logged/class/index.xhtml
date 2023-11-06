@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:of="http://omnifaces.org/functions"
+	template="/WEB-INF/template.xhtml">
+
+	<ui:define name="title">Clases</ui:define>
+
+	<ui:define name="viewname">
+		<li><p:link outcome="index.xhtml">Clases</p:link></li>
+	</ui:define>
+
+	
+	<ui:define name="content">
+
+		<div class="grid" style=" height: 100%;">
+			<div class="col col-12">
+
+				<div class="card" style=" height: 100%;">
+					<h:form id="form">
+
+						<p:toolbar>
+							<p:toolbarGroup>								
+								<p:commandButton value="Nueva clase" icon="pi pi-plus" actionListener="#{classController.initNewClass}"
+				                    update=":crudForm:crud-dialog-content  crudForm:crudButtons" oncomplete="PF('crudDialog').show()"
+				                    styleClass="ui-button-success" style="margin-right: .5rem">
+				                    <p:resetInput target=":crudForm:crud-dialog-content" />
+				                    </p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+
+						<p:dataTable id="tableList" widgetVar="tableList" 
+							value="#{classController.classes}" globalFilterOnly="true"
+							var="item" rowKey="#{item.id}" rowIndexVar="rowNumber"
+							reflow="true" resizableColumns="true" draggableColumns="true"
+							scrollable="#{scrollableDefault}"
+							scrollHeight="#{scrollHeightDefault}" paginator="true"
+							paginatorPosition="#{paginatorPosition}"
+							rows="#{rowPerPageDefault}"
+							currentPageReportTemplate="#{currentPageReportTemplate}"
+							rowsPerPageTemplate="#{rowsPerPageTemplate}"
+							paginatorTemplate="#{paginatorTemplate}"
+							emptyMessage="#{classController.noMatch}">
+							<p:column headerText="#" width="10" toggleable="false"
+								styleClass="table-row-number">
+								<h:outputText class="title-row" value="#{rowNumber+1}" />
+							</p:column>
+
+							<p:column width="40" exportable="false" toggleable="false"
+								resizable="false">
+								<p:commandButton icon="pi pi-pencil" action="#{classController.getClassById(item.id)}"
+									oncomplete="PF('crudDialog').show()" 
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
+								<p:commandButton icon="pi pi-check" action="#{classController.activeClass(item.id)}"
+									title="Activar o desactivar clase" update=":form:tableList"
+									styleClass="edit-button rounded-button">
+									<p:confirm header="Confirmación"
+									message="#{item.activeClass?'¿Desea desactivar la clase? esto detendra cualquier sesion de juego activa'
+									:'¿Desea activar la clase? esto creara una sesion de juego'}"
+									icon="ui-icon-alert" />
+								</p:commandButton>
+							</p:column>
+
+							<p:column headerText="#{msgGlobal['lbl.name']}" width="300"
+								toggleable="false" sortBy="#{item.name}" filterBy="#{item.name}"
+								filterMatchMode="contains">
+								<h:outputText id="name" value="#{item.name}"
+									title="#{item.name}" />
+							</p:column>
+							<p:column headerText="Activa" width="300"
+								toggleable="false" sortBy="#{item.activeClass}" filterBy="#{item.activeClass}"
+								filterMatchMode="contains">
+								<h:outputText  value="Con sesion de juegoa activa " title="Clase activa" rendered="#{item.activeClass}"/> <h:outputText styleClass="pi pi-check" title="Clase activa" rendered="#{item.activeClass}"/>
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</div>
+			</div>
+		</div>
+		
+		<h:form id="crudForm">
+
+			<p:sidebar id="crudDialog" widgetVar="crudDialog" fullScreen="true"
+				modal="true" responsive="true" dynamic="true" style="overflow:auto;"
+				blockScroll="true">
+
+
+				<h3>Clase</h3>
+
+				<p:outputPanel id="crud-dialog-content" class="ui-fluid">
+
+					<p:tabView id="tabs">
+						<p:tab id="campaignDataFieldSet" title="Datos de la clase">
+							<div class="formgrid grid">
+								<div class="field col col-12 md:col-8 lg:col-8">
+									<p:outputLabel id="nameLabel" value="Nombre" for="name"
+										title="Nombre de la clase (Requerido)" style="cursor: help;">
+										<i class="pi pi-question-circle" aria-hidden="true"
+											style="cursor: help;"></i>
+									</p:outputLabel>
+									<p:inputText id="name" value="#{classController.item.name}"
+										required="true" maxlength="100"
+										title="Nombre de la clase (Requerido)" />
+								</div>
+							</div>
+						</p:tab>
+					</p:tabView>
+				</p:outputPanel>
+				<div class="formgrid grid">
+					<div class="ui-sidebar-footer field col col-12 md:col-12 lg:col-12">
+
+						<h:panelGroup id="crudButtons" class="right-0">
+
+							<p:commandButton id="saveBtn" value="Guardar" icon="pi pi-save"
+								update="crud-dialog-content :form:tableList crudButtons"
+								process="crud-dialog-content @this"
+								action="#{classController.save}" styleClass="ui-button-success">
+							</p:commandButton>
+
+							<p:commandButton value="Borrar" icon="pi pi-trash"
+								rendered="#{classController.item.status eq 1}"
+								styleClass="ui-button-danger"
+								update="crud-dialog-content :form:tableList crudButtons"
+								process="@this" action="#{classController.delete}">
+								<p:confirm header="Confirmación"
+									message="¿Desea eliminar el registro?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+
+							<p:commandButton value="Cancelar"
+								icon="pi pi-times" onclick="PF('crudDialog').hide()"
+								styleClass="ui-button-warning" type="button">
+								<p:confirm header="Confirmación"
+									escape="false" message="¿Seguro desea continuar?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+
+						</h:panelGroup>
+					</div>
+				</div>
+			</p:sidebar>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+				responsive="true" width="350">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-flat" />
+			</p:confirmDialog>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

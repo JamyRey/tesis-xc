@@ -1,0 +1,65 @@
+
+@media only screen and (max-width: 640px) {
+  
+  .ui-datatable .table-content-center {
+	    text-align: left;
+	}
+	
+	.ui-datatable .table-content-right {
+	    text-align: left;
+	    padding-right: 0px;
+	}
+	
+	.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] {
+	   position: relative;
+	   padding: 0.5rem 1rem 0.5rem 1rem;
+	}
+	
+	.ui-datatable-reflow .ui-datatable-data td[role="gridcell"]:first-child {
+       margin-top: 15px;
+    }
+	
+	.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] span:last-child {
+        margin: 0;
+	    position: absolute;
+	    top: 50%;
+	    transform: translate(0%, -50%);
+    }
+	
+	.ui-datatable-reflow .ui-datatable-data td[role="gridcell"] .ui-column-title {
+	    width: 30%;
+	}
+  
+}
+
+.ui-datatable .ui-datatable-header .heading {
+	text-transform: uppercase;
+	position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.ui-datatable .ui-datatable-header .heading label {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.ui-datatable .table-content-center {
+    text-align: center;
+}
+
+.ui-datatable .table-content-right {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.ui-datatable .ui-column-title {
+    white-space: normal;
+}
+
+.ui-datatable .ui-button {
+    margin-right: 0.5rem;
+}
+

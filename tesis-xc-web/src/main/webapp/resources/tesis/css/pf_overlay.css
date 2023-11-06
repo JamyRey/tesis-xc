@@ -1,0 +1,25 @@
+
+@media only screen and (max-width: 640px) {
+	.ui-tooltip.ui-tooltip-global.ui-widget.tooltip-focus {
+	    display: none !important;
+	}
+}
+
+body .ui-sidebar .ui-sidebar-footer {
+    border-top: 0 none;
+    background: #ffffff;
+    color: #495057;
+    padding: 0 1.5rem 1.5rem 1.5rem rem;
+    margin: 0;
+    text-align: right;
+}
+
+body .ui-sidebar .ui-sidebar-footer button {
+    margin: 1rem 0.5rem 0 0;
+    width: auto;
+}
+
+body .ui-sidebar.ui-sidebar-top {
+	height: auto;
+}
+

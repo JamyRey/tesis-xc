@@ -3,18 +3,20 @@ package org.tesis.xc.manager.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.tesis.util.jakarta.controller.FacesMessageUtil;
 import org.tesis.util.jakarta.controller.FacesUtil;
+import org.tesis.xc.manager.imp.SessionDaoImp;
+import org.tesis.xc.util.AnalyzerException;
 import org.tesis.xs.entity.LoginEntity;
 import org.tesis.xs.entity.SessionEntity;
 import org.tesis.xs.exception.IdentityNotAvailableException;
 import org.tesis.xs.exception.IdentityNotfoundException;
 import org.tesis.xs.utils.XSHA1Util;
+import org.tesis.xs.serv.SessionDao;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -34,14 +36,11 @@ public class LoginController implements Serializable {
     private SessionEntity       session           = new SessionEntity();
     private String              myPath;
        
-
-    //@Inject private SessionDao sessionDao;
     private SessionDao sessionDao = new SessionDaoImp();
 
 
     @PostConstruct
-    public void init() {
-        // Primer Servicio llamado en todo el sistema
+    public void init() {      
 
         try {
             
@@ -59,13 +58,7 @@ public class LoginController implements Serializable {
             this.status_connection = false;
             log.error("Error: ", e);
             FacesMessageUtil.generateErrorMessage("msg.err.controller.unexpected");
-            //FacesMessageUtil.generateErrorMessage(JsfResourceBundleUtil.getResourceBundleGlobalValue(
-                    //LanguageEnums.BUNDLE_GLOBAL.getValue(), "msg.err.controller.unexpected"));
         }
-
-        /*if (dataConfig == null) {
-            this.status_connection = false;
-        }*/
     }
 
     /**
@@ -85,34 +78,23 @@ public class LoginController implements Serializable {
             FacesUtil.getFacesSession(true).setAttribute("session", this.session);
 
             FacesUtil.getFacesSession(true).setMaxInactiveInterval(session.getTimeOutSession());
-            // Depuramos los status
+            
             FacesUtil.getFacesSession(true).setAttribute("status_session", true);
 
             if (myPath == null) {
-                //FacesUtil.redirectPage("logged/dashboard.xhtml");
-                FacesUtil.redirectPage("/logged/dashboard.xhtml");
+                FacesUtil.redirectPage("/logged/class/index.xhtml");
             }
-            /*else {
-                PrimeFaces.current().executeScript("PF('sesionWarningTimer').stop();");
-                PrimeFaces.current().executeScript("PF('loginDialogWidget').hide();");
-                PrimeFaces.current().executeScript("startIdleInterval();");
-                
-            }*/
+           
         }
         catch (IdentityNotfoundException e) {
-            FacesMessageUtil.generateErrorMessage("Usuario no encontrado."); // TODO: Cambiar por bundle
-            //FacesMessageUtil.generateInfoMessage(
-              //      ResourceBundleUtil.getResourceBundleValue(xLangBundle, "msg.controller.invalidUser"));
+            FacesMessageUtil.generateErrorMessage("Usuario no encontrado."); 
         }
         catch (IdentityNotAvailableException e) {
-            FacesMessageUtil.generateErrorMessage("Su usuario se encuentra deshabilitado."); // TODO: Cambiar por bundle
-            //FacesMessageUtil.generateInfoMessage(
-              //      ResourceBundleUtil.getResourceBundleValue(xLangBundle, "msg.controller.userNotEnabled"));
+            FacesMessageUtil.generateErrorMessage("Su usuario se encuentra deshabilitado."); 
         }
         catch (Throwable e) {
             log.error("Error: ", e);
-            //AnalyzerException.analyzer(this, e);
-            throw e;
+            AnalyzerException.analyzer(this, e);
         }
 
         return null;
@@ -130,7 +112,7 @@ public class LoginController implements Serializable {
             FacesUtil.getFacesSession(true).setAttribute("login", this.login);
 
             FacesUtil.getFacesSession(true).setMaxInactiveInterval(session.getTimeOutSession());
-            // Depuramos los status
+           
             FacesUtil.getFacesSession(true).setAttribute("status_session", true);
             
 
@@ -146,19 +128,14 @@ public class LoginController implements Serializable {
             }
         }
         catch (IdentityNotfoundException e) {
-            FacesMessageUtil.generateErrorMessage("Usuario no encontrado."); // TODO: Cambiar por bundle
-            //FacesMessageUtil.generateInfoMessage(
-              //      ResourceBundleUtil.getResourceBundleValue(xLangBundle, "msg.controller.invalidUser"));
+            FacesMessageUtil.generateErrorMessage("Usuario no encontrado.");
         }
         catch (IdentityNotAvailableException e) {
-            FacesMessageUtil.generateErrorMessage("Su usuario se encuentra deshabilitado."); // TODO: Cambiar por bundle
-            //FacesMessageUtil.generateInfoMessage(
-              //      ResourceBundleUtil.getResourceBundleValue(xLangBundle, "msg.controller.userNotEnabled"));
+            FacesMessageUtil.generateErrorMessage("Su usuario se encuentra deshabilitado."); 
         }
         catch (Throwable e) {
             log.error("Error: ", e);
-           // XAnalyzerException.analyzer(this, e);
-            throw e;
+            AnalyzerException.analyzer(this, e);
         }
 
         return null;

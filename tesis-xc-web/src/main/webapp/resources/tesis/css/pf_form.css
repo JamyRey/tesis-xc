@@ -1,0 +1,17 @@
+ui-inputgroup {
+	
+	height: auto;
+}
+
+.ui-inputgroup :not(.ui-inputgroup-addon) input {
+	height: 100%;
+}
+
+.ui-inputgroup .ui-inputgroup-addon {
+	min-width: auto !important;
+}
+
+.ui-inputgroup .ui-inputgroup-addon .ui-chkbox .ui-chkbox-label {
+	margin: 0 8px 0 8px;
+}
+

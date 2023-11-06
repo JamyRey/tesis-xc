@@ -3,7 +3,6 @@ package org.tesis.xc.jakarta.net.rest.jersey.client;
 import java.util.HashMap;
 
 import org.tesis.xs.exception.Analyzer;
-import org.tesis.xs.exception.BasicException;
 import org.tesis.xs.exception.ConexionFailedException;
 import org.tesis.xs.exception.ConexionNotFoundException;
 import org.tesis.xs.exception.ErrorCode;

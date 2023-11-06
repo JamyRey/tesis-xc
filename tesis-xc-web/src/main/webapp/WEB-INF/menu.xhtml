@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" >
+
+    <div class="layout-menu-container">
+        <div class="layout-menu-logo">
+            <h:link id="logolink">
+                <p:graphicImage />
+            </h:link>
+        </div>
+        
+        <div class="layout-menu-wrapper">
+            <div class="menu-scroll-content" style=" height: 100%;">
+                <h:form id="menuform" style=" height: 100%;">                    
+
+                    <p:menu widgetVar="menu" style=" height: 100%;">
+                        <p:submenu id="m_homepage"  icon="pi pi-list">
+                            <p:menuitem id="m_classes" value="Clases" icon="pi pi-users" outcome="/logged/class/index" rendered="true"/>
+                            <p:menuitem id="m_students" value="Estudiantes" icon="pi pi-user" outcome="/logged/student/index" rendered="true"/>
+                        </p:submenu>
+
+                    </p:menu>
+                </h:form>
+            </div>
+        </div>
+    </div>
+</ui:composition>

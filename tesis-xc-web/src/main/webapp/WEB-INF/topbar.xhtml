@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <div class="layout-topbar">
+        <h:link id="toplogolink" outcome="/logged/marketingCampaign/index" styleClass="layout-topbar-logo">
+            <p:graphicImage name="images/#{guestPreferences.darkLogo ? 'logo-black.png' : 'logo-white.png'}" library="xetux" />
+        </h:link>
+
+        <a class="layout-menu-button" href="#">
+            <i class="pi pi-bars" />
+        </a>
+
+        <a id="topbar-menu-button" href="#">
+            <i class="pi pi-ellipsis-v" />
+        </a>
+
+        <ul class="topbar-menu fadeInDown">
+			<li>
+                <a href="#">
+                    <p:avatar label="#{template.session.userFirstName.charAt(0)}#{template.session.userLastName.charAt(0)}" styleClass="mr-2" size="large" shape="circle"   
+                    style="background-color:#ffffff;" />
+                </a>
+                <ul>
+						<div class="card flex justify-content-between">						
+							<div class="inline-block">
+							<i class="inline topbar-icon pi pi-user" style="font-size: 36px"/>
+							</div>
+							<div class="inline-block">
+							<p:outputPanel>
+								<span class="layout-profile-name text-right" style="">#{template.session.userFullName}</span>
+								<br/> 
+								<span class="layout-profile-role text-right" style="font-size:12px;color: #666666;">#{template.session.email}</span>
+							</p:outputPanel>
+							</div>
+						</div>
+					<li role="menuitem">
+                        <a onclick="$('#logoutBtn').click()">
+                            <i class="pi pi-sign-out"/>
+                            <span>#{msgGlobal['lbl.logout']}</span>
+                        </a>
+                        <p:commandButton id="logoutBtn" action="#{template.logout}" style="display:none;"></p:commandButton>
+                    </li>
+                    <li role="menuitem">
+                        <a href="/xnext/logged/profile/index.xhtml">
+                            <i class="pi pi-key"/>
+                            <span>#{msgGlobal['lbl.myProfile']}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+</ui:composition>

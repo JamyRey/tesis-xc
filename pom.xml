@@ -28,9 +28,7 @@
     <module>tesis-xc-web</module>
       
   </modules>
-        
-
-  
+      
   
   <properties>
         	  	
@@ -128,7 +126,6 @@
                 
     
     <faces.version>4.0.0</faces.version>
-                
     
     <cdi-api.version>4.0.1</cdi-api.version>
                 
@@ -947,8 +944,6 @@
                 			
       
       </dependency>
-            						
-      
       <dependency>
                                 
         

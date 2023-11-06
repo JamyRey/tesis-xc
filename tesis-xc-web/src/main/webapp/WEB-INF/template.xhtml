@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      lang="en">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title><ui:insert name="title">TESIS</ui:insert></title>
+        <h:outputScript name="js/prism.js" library="tesis" />
+        <h:outputScript name="js/layout.js" library="tesis" />
+        <ui:insert name="head"/>
+        
+    </h:head>
+
+    <h:body id="body" styleClass="ui-input-filled">
+    
+    	<!-- Parametros generales para formatos -->
+    	<ui:param name="timezone" value="#{template.timezone}" />
+    	<ui:param name="zoneId" value="#{template.timezone.toZoneId()}" />
+    
+    	<!-- Parametros generales para datatable -->
+    	<ui:param name="reflow" value="true" />
+		<ui:param name="resizableColumns" value="true" />
+		<ui:param name="draggableColumns" value="true" />
+		<ui:param name="scrollableDefault" value="false" />
+		<ui:param name="scrollHeightDefault" value="350" />
+		<ui:param name="scrollRows" value="50" />
+		<ui:param name="liveScroll" value="true" />
+		<ui:param name="rowsPerPageTemplate"
+			value="25,50,75,100,150,200,250,500,1000" />
+		<ui:param name="rowPerPageDefault" value="100" />
+		<ui:param name="paginatorPosition" value="bottom" />
+		<ui:param name="currentPageReportTemplate"
+			value="{startRecord}-{endRecord} #{msgGlobal['lbl.of']} {totalRecords} #{msgGlobal['lbl.records']}. (#{msgGlobal['lbl.pag']} {currentPage}/{totalPages})" />
+		<ui:param name="paginatorTemplate"
+			value="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}" />
+
+			<p:ajaxStatus styleClass="layout-ajax-loader block ">
+                <f:facet name="start">
+	                <div class="layout-ajax-loader-background">
+	                	<i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"/>
+	                </div> 
+	                
+                </f:facet>
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+    
+	<div class="layout-wrapper layout-static light" >
+            <ui:include src="./topbar.xhtml"/>
+            <ui:include src="./menu.xhtml"/>
+
+            <div class="layout-main">       
+                <div class="route-bar">
+                    <div class="route-bar-breadcrumb">
+                        <i class="pi pi-home"/>
+                        <span>/ </span>
+                        <ui:insert name="viewname" />
+                    </div>
+                </div> 
+                <div class="layout-content">
+                    <h:form id="generalGrowlForm">
+	                    <p:growl id="generalGrowl" showDetail="false">
+	                        <p:autoUpdate />
+	                    </p:growl>
+	                </h:form>
+	                <p:tooltip id="globalTooltip" globalSelector="*" position="bottom" />
+	                <p:tooltip id="globalTooltipFocus" globalSelector=".title-on-focus, .title-on-focus *"  
+	                   styleClass="tooltip-focus" showEvent="focus" hideEvent="blur" position="bottom"/>
+                    <ui:insert name="content"/>
+                </div>
+                <div class="layout-footer">
+                    <ui:include src="./footer.xhtml"/>
+                </div>
+            </div>
+            
+             <p:blockUI block="body" id="blockScreen" widgetVar="blockScreen" styleClass="layout-ajax-loader">
+                    <i class="pi pi-spin pi-spinner layout-ajax-loader-icon" aria-hidden="true"/>
+	        </p:blockUI>
+	         
+	        <!--  <p:ajaxStatus onstart="PF('blockScreen').show()" onsuccess="PF('blockScreen').hide()"/>  -->
+
+		<div class="layout-mask"></div>
+        </div>
+        
+     
+              
+        <h:outputStylesheet name="css/primeicons.css" library="tesis" />
+        <h:outputStylesheet name="css/primeflex.min.css" library="tesis" />
+        <h:outputStylesheet name="css/demo.css" library="tesis" />
+        <h:outputStylesheet name="css/layout-amber.css" library="tesis" />
+        <h:outputStylesheet name="css/theme.css" library="tesis" />
+        <!-- Xetux Styles  -->
+        <h:outputStylesheet name="css/pf_data.css" library="tesis" />
+        <h:outputStylesheet name="css/pf_overlay.css" library="tesis" />
+        <h:outputStylesheet name="css/pf_form.css" library="tesis" />
+        <h:outputStylesheet name="css/b_layout.css" library="tesis" />
+    </h:body>
+
+</html>
