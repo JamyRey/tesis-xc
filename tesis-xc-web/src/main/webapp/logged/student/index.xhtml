@@ -217,40 +217,45 @@
 
 				</p:outputPanel>
 			</p:dialog>
-			
-			<p:dialog header="Puntaje"
-				id="scoresDialog" showEffect="fade" modal="true"
-				widgetVar="scoresDialog" responsive="true"
-				style="min-width: 28%;max-width: 380px;width: auto;max-height:100%;">
+
+			<p:dialog header="Puntaje" id="scoresDialog" showEffect="fade"
+				modal="true" widgetVar="scoresDialog" responsive="true"
+				style="mwidth: auto;max-height:100%;overflow: auto;">
 				<p:outputPanel id="scores-dialog-content" class="ui-fluid">
 
 					<div class="col col-12">
 						<div class="formgrid grid">
-						
-						<p:dataTable id="scoresTable" widgetVar="scoresTable"
-							size="small" value="#{studentController.gameSessionsDisplay}"
-							globalFilterOnly="true" var="item" rowKey="#{item.id}"
-							rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
-							draggableColumns="true" scrollable="#{scrollableDefault}"
-							scrollHeight="300" paginator="true"
-							paginatorPosition="#{paginatorPosition}" rows="10"
-							currentPageReportTemplate="#{currentPageReportTemplate}"
-							paginatorTemplate="#{paginatorTemplate}"
-							emptyMessage="#{studentController.noMatch}">
+							<div class="col col-12">
+								<p:dataTable id="scoresTable" widgetVar="scoresTable"
+									size="small" value="#{studentController.gameSessionsDisplay}"
+									globalFilterOnly="true" var="item" rowKey="#{item.id}"
+									rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
+									draggableColumns="true" scrollable="#{scrollableDefault}"
+									scrollHeight="300" paginator="true"
+									paginatorPosition="#{paginatorPosition}" rows="10"
+									currentPageReportTemplate="#{currentPageReportTemplate}"
+									paginatorTemplate="#{paginatorTemplate}"
+									emptyMessage="#{studentController.noMatch}">
+
+									<p:column headerText="Nombre de la Clase" width="300"
+										toggleable="false" sortBy="#{item.classE.name}"
+										filterBy="#{item.classE.name}" filterMatchMode="contains">
+										<h:outputText value="#{item.classE.name}"
+											title="#{item.classE.name}" />
+									</p:column>
+									<p:column headerText="Empieza" width="120"
+										sortBy="#{item.startAt}" styleClass="table-content-center">
+										<h:outputText id="starAt" value="#{item.startAt}">
+											<f:convertDateTime type="localDateTime" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+							</div>
+							<div class="col col-12">
 							
-							<p:column headerText="Nombre de la Clase" width="300"
-								toggleable="false" sortBy="#{item.classE.name}" filterBy="#{item.classE.name}"
-								filterMatchMode="contains">
-								<h:outputText  value="#{item.classE.name}"
-									title="#{item.classE.name}" />
-							</p:column>
-							<p:column headerText="Empieza" width="120"
-									sortBy="#{item.startAt}" styleClass="table-content-center">
-							<h:outputText id="starAt" value="#{item.startAt}" >
-										<f:convertDateTime type="localDateTime" />
-									</h:outputText>
-							</p:column>
-						</p:dataTable>
+							<p:lineChart model="#{studentController.lineModel}" style="width: 100%; height: 500px;"/>
+							
+							</div>
 						</div>
 					</div>
 				</p:outputPanel>
