@@ -14,6 +14,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.hbar.HorizontalBarChartDataSet;
+import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
 import org.primefaces.model.charts.line.LineChartDataSet;
 import org.primefaces.model.charts.line.LineChartModel;
 import org.primefaces.model.charts.line.LineChartOptions;
@@ -28,6 +34,7 @@ import org.tesis.xs.entity.ScoreValues;
 import org.tesis.xs.entity.StudentEntity;
 import org.tesis.xs.entity.full.StudentFullEntity;
 import org.tesis.xs.enums.ScoresTypes;
+import org.tesis.xs.exception.BasicException;
 import org.tesis.xs.exception.MasterException;
 import org.tesis.xs.serv.StudentDao;
 
@@ -51,6 +58,7 @@ public class StudentController implements Serializable {
 	private List<GameSession> gameSessionsDisplay;
 	private List<ScoreValues> allScores = new ArrayList<>();
 	private LineChartModel lineModel;
+	private HorizontalBarChartModel hbarModel;
 	private String noMatch = "No se encontraron resultados.";
 	private int r = 50;
 	private int g = 100;
@@ -69,6 +77,8 @@ public class StudentController implements Serializable {
 			
 			initNewStudent();
 			lineModel = new LineChartModel();
+			hbarModel = new HorizontalBarChartModel();
+			createLineModel();
 		} catch (Throwable e) {
 			AnalyzerException.analyzer(this, e);
 		}
@@ -86,6 +96,7 @@ public class StudentController implements Serializable {
 		try {
 			
 			item = dao.getStudentById(id);
+			PrimeFaces.current().executeScript("PF('crudDialog').hide();");
 			
 		} catch (Throwable e) {
 			AnalyzerException.analyzer(this, e);
@@ -100,6 +111,7 @@ public class StudentController implements Serializable {
 			if(item.getStatus()==0) {
 				item.setStatus(1);
 				dao.createStudent(item);
+				students.add(item);
 			}			
 			else {
 				dao.updateStudent(item);
@@ -109,13 +121,34 @@ public class StudentController implements Serializable {
 			}
 			PrimeFaces.current().executeScript("PF('crudDialog').hide();");
     	    FacesMessageUtil.generateInfoMessage("Cambios guardados satisfactoriamente.");
-		}catch (MasterException e) {    	    	
+		}catch (MasterException e) {    
+			if(item.getId()==0)
+				item.setStatus(0);
     			FacesMessageUtil.generateErrorMessage(e.getEntity().getMessage());
     			log.info(e.getMessage());
             
 		} catch (Throwable e) {
 			
 		}
+	}
+	
+	public void delete() throws BasicException {
+		
+		try {
+			
+			dao.deleteStudent(item.getId());
+			
+			StudentEntity studentAux =
+					students.stream().filter(c -> c.getId() == item.getId())
+                    .findAny().orElseThrow();
+            int studentIndex = students.indexOf(studentAux);
+            classes.remove(studentIndex);
+            PrimeFaces.current().executeScript("PF('crudDialog').hide();");
+            FacesMessageUtil.generateInfoMessage("Cambios guardados satisfactoriamente.");
+			
+		}catch (BasicException e) {
+            AnalyzerException.analyzer(this, e);
+        }
 	}
 	
 	public void getScoresById(int id) {
@@ -137,7 +170,9 @@ public class StudentController implements Serializable {
         b = 175;
         lineModel = new LineChartModel();
         ChartData data = new ChartData();
-        
+        if(gameSessionsDisplay==null) {
+        	gameSessionsDisplay = new ArrayList<>();
+        }
         DateTimeFormatter dtFormatter = 
                 DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
                 .withLocale(SessionUtil.getLocale());
@@ -205,7 +240,62 @@ public class StudentController implements Serializable {
         options.setTitle(title);
         lineModel.setOptions(options);
         lineModel.setData(data);
+        
+        createHbarModel();
+        
+        
+        
     }
+	
+	public void createHbarModel() {
+		r = 50;
+        g = 100;
+        b = 175;
+        updateRGB(r, g, b);
+		hbarModel = new HorizontalBarChartModel();
+		ChartData data = new ChartData();
+		HorizontalBarChartDataSet hbarDataSet = new HorizontalBarChartDataSet();
+		hbarDataSet.setLabel("Nota promedio");
+		List<Number> values = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
+        List<String> bgColor = new ArrayList<>();
+        List<String> borderColor = new ArrayList<>();
+        Collections.sort(allScores,(o1, o2) -> Double.compare(o2.getFinalScore(),o1.getFinalScore()));
+		for (ScoreValues item : allScores) {
+			 updateRGB(r, g, b);
+			 values.add(item.getFinalScore());
+        	 labels.add(item.getType().getName());
+        	 bgColor.add("rgb("+(r)+", "+(g)+", "+(b)+")");
+        	 borderColor.add("rgb(0, 0, 0)");
+		}
+		hbarDataSet.setData(values);
+		hbarDataSet.setBackgroundColor(bgColor);
+		hbarDataSet.setBorderColor(bgColor);
+		hbarDataSet.setHoverBackgroundColor(bgColor);
+		hbarDataSet.setHoverBorderColor(borderColor);
+		hbarDataSet.setBorderWidth(1);
+		hbarDataSet.setHoverBorderWidth(2);
+		data.addChartDataSet(hbarDataSet);
+		data.setLabels(labels);
+		hbarModel.setData(data);
+		//Options
+        BarChartOptions options = new BarChartOptions();
+        CartesianScales cScales = new CartesianScales();
+        CartesianLinearAxes linearAxes = new CartesianLinearAxes();
+        linearAxes.setOffset(true);
+        CartesianLinearTicks ticks = new CartesianLinearTicks();
+        linearAxes.setTicks(ticks);
+        cScales.addXAxesData(linearAxes);
+        options.setScales(cScales);
+
+        Title title = new Title();
+        title.setDisplay(true);
+        title.setText("Notas promedio sobre 20 por tipo de puntaje ");
+        options.setTitle(title);
+
+        hbarModel.setOptions(options);
+		
+	}
 	
 	private void updateRGB(int r, int g, int b) {
 		
@@ -275,6 +365,14 @@ public class StudentController implements Serializable {
 
 	public void setAllScores(List<ScoreValues> allScores) {
 		this.allScores = allScores;
+	}
+
+	public HorizontalBarChartModel getHbarModel() {
+		return hbarModel;
+	}
+
+	public void setHbarModel(HorizontalBarChartModel hbarModel) {
+		this.hbarModel = hbarModel;
 	}
 	
 }

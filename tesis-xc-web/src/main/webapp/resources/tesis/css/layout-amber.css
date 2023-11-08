@@ -2257,6 +2257,7 @@ a {
   .login-body .login-content {
     text-align: left;
     position: fixed;
+    padding: 80px 0 0 80px;
   }
   .login-body .login-content .login-input-wrapper {
     width: 300px;

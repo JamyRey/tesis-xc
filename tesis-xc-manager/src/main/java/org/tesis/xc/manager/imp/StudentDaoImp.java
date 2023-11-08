@@ -80,7 +80,7 @@ public class StudentDaoImp implements StudentDao, Serializable{
 	public StudentEntity getStudentById(int id) throws BasicException {
 		HashMap<String, String> param = new HashMap<>();
 		param.put("id", String.valueOf(id));
-        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.GET, ServiceStudentEnum.getStudentById)) {
+        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.GET, ServiceStudentEnum.getStudentById,param)) {
             if (service.execute()) 
                 return service.getResponce(StudentEntity.class);
             else if (service.getResponceCode() == Status.FORBIDDEN.getStatusCode()) 
@@ -94,5 +94,27 @@ public class StudentDaoImp implements StudentDao, Serializable{
             throw new BasicException("Error en llamado a servicio para obtener clases por id",e);
         }
 	}
+	
+    @Override
+    public void deleteStudent(int id) throws BasicException {
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("id", String.valueOf(id));
+
+        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.DELETE, ServiceStudentEnum.deleteStudent, param)) {
+            
+            if (!service.execute()) 
+                if (service.getResponceCode() == Status.FORBIDDEN.getStatusCode()) 
+    				throw MasterExceptionEnum.exception(service.getResponce(ExceptionEntity.class).getCode());
+    			else
+    				throw (BasicException) AnalyzerException.analyzer(service.getResponceCode());       
+            
+        } catch (BasicException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new BasicException("Error en llamado a servicio de eliminación de estudiantes",e);
+        }
+       
+    }
 	
 }

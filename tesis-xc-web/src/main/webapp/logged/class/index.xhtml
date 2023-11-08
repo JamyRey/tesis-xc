@@ -43,6 +43,24 @@
 							rowsPerPageTemplate="#{rowsPerPageTemplate}"
 							paginatorTemplate="#{paginatorTemplate}"
 							emptyMessage="#{classController.noMatch}">
+							
+							<f:facet name="header">
+								<div class="grid ui-fluid">
+									<div class="col-12 md:col-12 lg:col heading"></div>
+									<div class="col-12 md:col-3 lg:col-3"></div>
+									<div class="col-12 md:col-3 lg:col-3">
+										<div class="grid">
+											<div class="col">
+												<span class="filter-container ui-input-icon-left"> <i
+													class="pi pi-search"></i> <p:inputText id="globalFilter"
+														onkeyup="PF('tableList').filter()" placeholder="Buscar" />
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</f:facet>
+							
 							<p:column headerText="#" width="10" toggleable="false"
 								styleClass="table-row-number">
 								<h:outputText class="title-row" value="#{rowNumber+1}" />
@@ -52,6 +70,7 @@
 								resizable="false">
 								<p:commandButton icon="pi pi-pencil" action="#{classController.getClassById(item.id)}"
 									oncomplete="PF('crudDialog').show()" 
+									update=":crudForm:crud-dialog-content  crudForm:crudButtons"
 									styleClass="edit-button rounded-button">
 								</p:commandButton>
 								<p:commandButton icon="pi pi-check" action="#{classController.activeClass(item.id)}"
@@ -62,18 +81,30 @@
 									:'¿Desea activar la clase? esto creara una sesion de juego'}"
 									icon="ui-icon-alert" />
 								</p:commandButton>
+								<p:commandButton icon="pi pi-search"
+									action="#{classController.getClassById(item.id)}"
+									update=":studentsForm:studentsDialog"
+									oncomplete="PF('studentsDialog').show()"
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
 							</p:column>
 
-							<p:column headerText="#{msgGlobal['lbl.name']}" width="300"
+							<p:column headerText="Nombre de la Clase" width="300"
 								toggleable="false" sortBy="#{item.name}" filterBy="#{item.name}"
 								filterMatchMode="contains">
 								<h:outputText id="name" value="#{item.name}"
 									title="#{item.name}" />
 							</p:column>
-							<p:column headerText="Activa" width="300"
+							<p:column headerText="Activa" width="50"
 								toggleable="false" sortBy="#{item.activeClass}" filterBy="#{item.activeClass}"
 								filterMatchMode="contains">
 								<h:outputText  value="Con sesion de juegoa activa " title="Clase activa" rendered="#{item.activeClass}"/> <h:outputText styleClass="pi pi-check" title="Clase activa" rendered="#{item.activeClass}"/>
+							</p:column>
+							<p:column headerText="Nombre del Juego" width="100"
+								toggleable="false" sortBy="#{item.gameName}" filterBy="#{item.gameName}"
+								filterMatchMode="contains">
+								<h:outputText id="nameG" value="#{item.gameName}"
+									title="#{item.gameName}" />
 							</p:column>
 						</p:dataTable>
 					</h:form>
@@ -83,7 +114,7 @@
 		
 		<h:form id="crudForm">
 
-			<p:sidebar id="crudDialog" widgetVar="crudDialog" fullScreen="true"
+			<p:sidebar id="crudDialog" widgetVar="crudDialog"  position="top"
 				modal="true" responsive="true" dynamic="true" style="overflow:auto;"
 				blockScroll="true">
 
@@ -105,6 +136,27 @@
 										required="true" maxlength="100"
 										title="Nombre de la clase (Requerido)" />
 								</div>
+								<div class="field col col-12 md:col-4 lg:col-4">
+								<p:outputLabel id="gameLabel" value="Juego de la Clase"
+									for="game"
+									title="Juego bajo el cual todas las sesiones de juego seran creadas (Requerido)"
+									style="cursor: help;">
+									<i class="pi pi-question-circle" aria-hidden="true"
+										style="cursor: help;"></i>
+								</p:outputLabel>
+								<p:selectOneMenu id="game"
+									value="#{classController.item.game}"
+									required="true" filter="true" filterMatchMode="contains"
+									disabled="#{classController.item.id != 0}"
+									title="Juego bajo el cual todas las sesiones de juego seran creadas (Requerido)"
+									styleClass="title-on-focus">										
+									<f:selectItem itemLabel="Seleccione"
+										 />
+									<f:selectItems
+										value="#{classController.games}"
+										var="item" itemLabel="#{item.name}" itemValue="#{item.id}"/>
+								</p:selectOneMenu>
+							</div>
 							</div>
 						</p:tab>
 					</p:tabView>
@@ -149,6 +201,104 @@
 				<p:commandButton value="No" type="button"
 					styleClass="ui-confirmdialog-no ui-button-flat" />
 			</p:confirmDialog>
+		</h:form>
+		
+		<h:form id="studentsForm">
+			<p:dialog
+				header="Estudiantes de la Clase: #{classController.item.name}"
+				showEffect="fade" modal="true" id="studentsDialog"
+				widgetVar="studentsDialog" responsive="true"
+				style="max-height:100%;overflow: auto;">
+				<p:outputPanel id="classes-dialog-content" class="ui-fluid">
+
+					<div class="col col-12">
+
+						<p:dataTable id="classesTable" widgetVar="classesTable"
+							size="small" value="#{classController.item.students}"
+							globalFilterOnly="true" var="item" rowKey="#{item.id}"
+							rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
+							draggableColumns="true" scrollable="#{scrollableDefault}"
+							scrollHeight="300" paginator="true"
+							paginatorPosition="#{paginatorPosition}" rows="10"
+							currentPageReportTemplate="#{currentPageReportTemplate}"
+							paginatorTemplate="#{paginatorTemplate}"
+							emptyMessage="#{classController.noMatch}">
+
+							<p:column headerText="Nombre del Estudiante" width="300"
+								toggleable="false" sortBy="#{item.name}" filterBy="#{item.name}"
+								filterMatchMode="contains">
+								<h:outputText id="name" value="#{item.name}"
+									title="#{item.name}" />
+							</p:column>
+							<p:column width="300" toggleable="false" >
+								<p:commandButton icon="pi pi-list"
+									action="#{classController.getScoresById(item.id)}"
+									update=":studentsForm:scoresDialog"
+									oncomplete="PF('scoresDialog').show()"
+									styleClass="edit-button rounded-button">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+					</div>
+
+				</p:outputPanel>
+			</p:dialog>
+
+			<p:dialog header="Puntaje" id="scoresDialog" showEffect="fade"
+				modal="true" widgetVar="scoresDialog" responsive="true"
+				style="mwidth: auto;max-height:100%;overflow: auto;">
+				<p:outputPanel id="scores-dialog-content" class="ui-fluid">
+
+					<div class="col col-12">
+						<div class="formgrid grid">
+							<div class="field col col-12 md:col-6 lg:col-6">
+								<p:dataTable id="scoresTable" widgetVar="scoresTable"
+									size="small" value="#{classController.gameSessionsDisplay}"
+									globalFilterOnly="true" var="item" rowKey="#{item.id}"
+									rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
+									draggableColumns="true" scrollable="#{scrollableDefault}"
+									scrollHeight="300" paginator="true"
+									paginatorPosition="#{paginatorPosition}" rows="5"
+									currentPageReportTemplate="#{currentPageReportTemplate}"
+									paginatorTemplate="#{paginatorTemplate}"
+									emptyMessage="#{classController.noMatch}">
+
+									<f:facet name="header">
+										<div class="grid ui-fluid">
+											<div class="col-12 md:col-12 lg:col heading">
+												<p:outputLabel value="Listado de sesiones"
+													style="text-transform: uppercase;" />
+											</div>
+										</div>
+									</f:facet>
+									<p:column headerText="Empieza" width="120"
+										sortBy="#{item.startAt}" styleClass="table-content-center">
+										<h:outputText id="starAt" value="#{item.startAt}">
+											<f:convertDateTime type="localDateTime" />
+										</h:outputText>
+									</p:column>
+									<p:column headerText="Termina" width="120"
+										sortBy="#{item.endendAt}" styleClass="table-content-center">
+										<h:outputText id="endendAt" value="#{item.endendAt}">
+											<f:convertDateTime type="localDateTime" />
+										</h:outputText>
+									</p:column>
+								</p:dataTable>
+							</div>
+							<div class="field col col-12 md:col-6 lg:col-6">
+								<p:barChart model="#{classController.hbarModel}" style="width: 100%; height: 400px;"/>
+							</div>
+							<div class="col col-12">
+							
+							<p:lineChart model="#{classController.lineModel}" style="width: 100%; height: 500px;"/>
+							
+							</div>
+						</div>
+					</div>
+				</p:outputPanel>
+			</p:dialog>
 		</h:form>
 
 	</ui:define>

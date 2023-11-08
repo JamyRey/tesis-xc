@@ -8,6 +8,7 @@ public enum ServiceStudentEnum implements JerseyServiceInterface {
     getStudentById("getStudentById"),
     createStudent("createStudent"),
     updateStudent("updateStudent"),
+    deleteStudent("deleteStudent")
 	;
 	
     private String controllerPath = "student";

@@ -10,7 +10,7 @@
 @media screen and (min-width: 992px) {
 	.login-body {
 		background:
-			url("#{resource['xetux:images/pages/bg-login.jpg']}");
+			url("#{resource['tesis:images/Fondo.png']}");
 		background-size: cover;
 	}
 	.login-body .login-content img {

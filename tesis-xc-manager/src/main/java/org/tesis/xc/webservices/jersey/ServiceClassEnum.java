@@ -9,6 +9,7 @@ public enum ServiceClassEnum implements JerseyServiceInterface {
     createClass("createClass"),
     updateClass("updateClass"),
     updateActiveClass("updateActiveClass"),
+    deleteClass("deleteClass"),
 	;
 	
     private String controllerPath = "class";

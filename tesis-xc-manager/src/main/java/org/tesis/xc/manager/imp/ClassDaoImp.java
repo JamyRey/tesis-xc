@@ -80,7 +80,7 @@ public class ClassDaoImp implements ClassDao, Serializable{
 	public ClassEntity getClassById(int id) throws BasicException {
 		HashMap<String, String> param = new HashMap<>();
 		param.put("id", String.valueOf(id));
-        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.GET, ServiceClassEnum.getClassById)) {
+        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.GET, ServiceClassEnum.getClassById,param)) {
             if (service.execute()) 
                 return service.getResponce(ClassEntity.class);
             else if (service.getResponceCode() == Status.FORBIDDEN.getStatusCode()) 
@@ -109,6 +109,28 @@ public class ClassDaoImp implements ClassDao, Serializable{
             throw e;
         } catch (Throwable e) {
             throw new BasicException("Error en llamado a servicio para actualizar clase activa",e);
+        }
+       
+    }
+	
+    @Override
+    public void deleteClass(int id) throws BasicException {
+
+        HashMap<String, String> param = new HashMap<>();
+        param.put("id", String.valueOf(id));
+
+        try (JerseyClient service = new JerseyClient(JerseyMethodEnum.DELETE, ServiceClassEnum.deleteClass, param)) {
+            
+            if (!service.execute()) 
+                if (service.getResponceCode() == Status.FORBIDDEN.getStatusCode()) 
+    				throw MasterExceptionEnum.exception(service.getResponce(ExceptionEntity.class).getCode());
+    			else
+    				throw (BasicException) AnalyzerException.analyzer(service.getResponceCode());       
+            
+        } catch (BasicException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new BasicException("Error en llamado a servicio de eliminación de clase",e);
         }
        
     }

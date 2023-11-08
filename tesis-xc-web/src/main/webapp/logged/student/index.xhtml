@@ -6,10 +6,10 @@
 	xmlns:of="http://omnifaces.org/functions"
 	template="/WEB-INF/template.xhtml">
 
-	<ui:define name="title">Clases</ui:define>
+	<ui:define name="title">Estudiantes</ui:define>
 
 	<ui:define name="viewname">
-		<li><p:link outcome="index.xhtml">Clases</p:link></li>
+		<li><p:link outcome="index.xhtml">Estudiantes</p:link></li>
 	</ui:define>
 
 
@@ -45,16 +45,35 @@
 							rowsPerPageTemplate="#{rowsPerPageTemplate}"
 							paginatorTemplate="#{paginatorTemplate}"
 							emptyMessage="#{studentController.noMatch}">
-							<p:column headerText="#" width="10" toggleable="false"
+
+							<f:facet name="header">
+								<div class="grid ui-fluid">
+									<div class="col-12 md:col-12 lg:col heading"></div>
+									<div class="col-12 md:col-3 lg:col-3"></div>
+									<div class="col-12 md:col-3 lg:col-3">
+										<div class="grid">
+											<div class="col">
+												<span class="filter-container ui-input-icon-left"> <i
+													class="pi pi-search"></i> <p:inputText id="globalFilter"
+														onkeyup="PF('tableList').filter()" placeholder="Buscar" />
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</f:facet>
+
+							<p:column headerText="#" width="2%" toggleable="false"
 								styleClass="table-row-number">
 								<h:outputText class="title-row" value="#{rowNumber+1}" />
 							</p:column>
 
-							<p:column width="40" exportable="false" toggleable="false"
+							<p:column width="10" exportable="false" toggleable="false"
 								resizable="false">
 								<p:commandButton icon="pi pi-pencil"
 									action="#{studentController.getStudentById(item.id)}"
 									oncomplete="PF('crudDialog').show()"
+									update=":crudForm:crud-dialog-content  crudForm:crudButtons"
 									styleClass="edit-button rounded-button">
 								</p:commandButton>
 								<p:commandButton icon="pi pi-search"
@@ -65,7 +84,7 @@
 								</p:commandButton>
 							</p:column>
 
-							<p:column headerText="Nombre Completo" width="300"
+							<p:column headerText="Nombre Completo" width="100"
 								toggleable="false"
 								sortBy="#{item.firstName.concat(' ').concat(item.lastName)}"
 								filterBy="#{item.firstName.concat(' ').concat(item.lastName)}"
@@ -73,6 +92,15 @@
 								<h:outputText
 									value="#{item.firstName.concat(' ').concat(item.lastName)}"
 									title="#{item.firstName.concat(' ').concat(item.lastName)}" />
+							</p:column>
+							<p:column headerText="Identificación del Estudiante" width="100"
+								toggleable="false"
+								sortBy="#{item.studentId}"
+								filterBy="#{item.studentId}"
+								filterMatchMode="contains">
+								<h:outputText
+									value="#{item.studentId}"
+									title="#{item.studentId}" />
 							</p:column>
 						</p:dataTable>
 					</h:form>
@@ -82,7 +110,7 @@
 
 		<h:form id="crudForm">
 
-			<p:sidebar id="crudDialog" widgetVar="crudDialog" fullScreen="true"
+			<p:sidebar id="crudDialog" widgetVar="crudDialog" position="top"
 				modal="true" responsive="true" dynamic="true" style="overflow:auto;"
 				blockScroll="true">
 
@@ -225,31 +253,42 @@
 
 					<div class="col col-12">
 						<div class="formgrid grid">
-							<div class="col col-12">
+							<div class="field col col-12 md:col-6 lg:col-6">
 								<p:dataTable id="scoresTable" widgetVar="scoresTable"
 									size="small" value="#{studentController.gameSessionsDisplay}"
 									globalFilterOnly="true" var="item" rowKey="#{item.id}"
 									rowIndexVar="rowNumber" reflow="true" resizableColumns="true"
 									draggableColumns="true" scrollable="#{scrollableDefault}"
 									scrollHeight="300" paginator="true"
-									paginatorPosition="#{paginatorPosition}" rows="10"
+									paginatorPosition="#{paginatorPosition}" rows="5"
 									currentPageReportTemplate="#{currentPageReportTemplate}"
 									paginatorTemplate="#{paginatorTemplate}"
 									emptyMessage="#{studentController.noMatch}">
 
-									<p:column headerText="Nombre de la Clase" width="300"
-										toggleable="false" sortBy="#{item.classE.name}"
-										filterBy="#{item.classE.name}" filterMatchMode="contains">
-										<h:outputText value="#{item.classE.name}"
-											title="#{item.classE.name}" />
-									</p:column>
+									<f:facet name="header">
+										<div class="grid ui-fluid">
+											<div class="col-12 md:col-12 lg:col heading">
+												<p:outputLabel value="Listado de sesiones"
+													style="text-transform: uppercase;" />
+											</div>
+										</div>
+									</f:facet>
 									<p:column headerText="Empieza" width="120"
 										sortBy="#{item.startAt}" styleClass="table-content-center">
 										<h:outputText id="starAt" value="#{item.startAt}">
 											<f:convertDateTime type="localDateTime" />
 										</h:outputText>
 									</p:column>
+									<p:column headerText="Termina" width="120"
+										sortBy="#{item.endendAt}" styleClass="table-content-center">
+										<h:outputText id="endendAt" value="#{item.endendAt}">
+											<f:convertDateTime type="localDateTime" />
+										</h:outputText>
+									</p:column>
 								</p:dataTable>
+							</div>
+							<div class="field col col-12 md:col-6 lg:col-6">
+								<p:barChart model="#{studentController.hbarModel}" style="width: 100%; height: 400px;"/>
 							</div>
 							<div class="col col-12">
 							
